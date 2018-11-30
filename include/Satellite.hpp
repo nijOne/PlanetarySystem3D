@@ -11,7 +11,7 @@ class Satellite : public CelestialBody {
 
         this->name = name;
         this->mass = massInEarthMass * CelestialBody::MASSOfEarth;
-        this->radius = 100 * radiusInEarthRadius * RADIUSOfEarth / ASTRONOMICALUnit;
+        this->radius = 1000 * radiusInEarthRadius * RADIUSOfEarth / ASTRONOMICALUnit;
     }
 
     void setBodyOnScene() {

@@ -14,7 +14,7 @@ class Planet : public CelestialBody {
 
         this->name = name;
         this->mass = massInEarthMass * CelestialBody::MASSOfEarth;
-        this->radius = 100 * radiusInEarthRadius * RADIUSOfEarth / ASTRONOMICALUnit;
+        this->radius = 1000 * radiusInEarthRadius * RADIUSOfEarth / ASTRONOMICALUnit;
     }
 
     void addSatellite(string name, GLdouble massInEarthMass, GLdouble radiusInEarthRadius, GLdouble semiMajorAxis, GLdouble eccentricy, GLdouble omega, nColor* color) {

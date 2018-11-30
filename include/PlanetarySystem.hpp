@@ -38,7 +38,7 @@ class PlanetarySystem {
         planetsPTR.back()->setSource(sourceStar);
         planetsPTR.back()->setColor(color);
 
-            planetsPTR.back()->calcPeriod();
+        planetsPTR.back()->calcPeriod();
 
         planetsMAP[name] = planetsPTR.back();
     }

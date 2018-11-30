@@ -11,7 +11,7 @@ class Star : public CelestialBody {
 
         this->name = name;
         this->mass = massInSunMass*MASSOfSun;
-        this->radius = radiusInEarthRadius * RADIUSOfEarth / ASTRONOMICALUnit;
+        this->radius = 10 * radiusInEarthRadius * RADIUSOfEarth / ASTRONOMICALUnit;
     }
 
     void setBodyOnScene() {

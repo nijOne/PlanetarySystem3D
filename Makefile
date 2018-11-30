@@ -1,4 +1,4 @@
-LDLIBS=-lglut -lGL -lGLEW
+LDLIBS=-lglut -lGL -lGLEW -lGLU
 all: main
 clean:
 	rm -f *.o main
