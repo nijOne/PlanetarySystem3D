@@ -77,10 +77,23 @@ class CelestialBody {
     constexpr static GLdouble MASSOfSun = 1.98855e30;             // [kg]
     constexpr static GLdouble ASTRONOMICALUnit = 1.49598e11;      // [m]
 
+    CelestialBody() {
 
-    CelestialBody() {}
+        cout << "Default CelesitialBody Contructor Called" << endl;
+    }
 
-    public:
+    CelestialBody(string name, GLdouble massInEarthMass, GLdouble radiusInEarthRadius) {
+        
+        cout << "CelestialBody constructor called " << name << endl;
+        this->name = name;
+        this->mass = massInEarthMass * CelestialBody::MASSOfEarth;
+        this->radius = radiusInEarthRadius * RADIUSOfEarth / ASTRONOMICALUnit;
+    }
+
+    ~CelestialBody() {
+        
+        cout << "Destructor called" << name << endl;
+    }
 
     virtual void setBodyOnScene() = 0;
 
@@ -99,9 +112,9 @@ class CelestialBody {
         GLdouble theta = dayCount * calcThetaFromTimeGap();
         distanceFromSource = semiMajorAxis * (1 - pow(eccentricy,2)) / ( 1 + eccentricy * cos(theta*M_PI/180));
 
-        position3d.posX = distanceFromSource * cos((omega + theta)*M_PI/180) / ASTRONOMICALUnit;
-        position3d.posY = distanceFromSource * sin((omega + theta)*M_PI/180) / ASTRONOMICALUnit;
-        position3d.posZ = 0.0;
+        position3d.posX = source->position3d.posX + distanceFromSource * cos((omega + theta)*M_PI/180) / ASTRONOMICALUnit;
+        position3d.posY = source->position3d.posY + distanceFromSource * sin((omega + theta)*M_PI/180) / ASTRONOMICALUnit;
+        position3d.posZ = source->position3d.posZ + 0.0;
     }
 
     void calcPeriod() {
@@ -125,6 +138,32 @@ class CelestialBody {
     void setSource(CelestialBody* source) {
         
         this->source = source;
+    }
+
+    void getPosition() {
+        
+        cout << position3d.posX << " " << position3d.posY << " " << position3d.posZ << endl;
+        cout << radius << endl;
+    }
+
+    virtual void getPositionVector() {
+
+        getColor();
+        glVertex3d(source->position3d.posX, source->position3d.posY, source->position3d.posZ);
+        glVertex3d(position3d.posX, position3d.posY, position3d.posZ);
+    }
+
+    void getInfo() {
+
+        cout << "Name: " << name << endl;
+        cout << "Mass: " << mass << endl;
+        cout << "Radius: " << radius << endl;
+        cout << "Distance: " << distanceFromSource << endl;
+        cout << "Position: " << endl;
+        cout << "   X = " << position3d.posX << endl;
+        cout << "   Y = " << position3d.posY << endl;
+        cout << "   Z = " << position3d.posZ << endl;
+
     }
 };
 

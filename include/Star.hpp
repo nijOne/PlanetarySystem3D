@@ -3,7 +3,6 @@
 
 #include "CelestialBody.hpp"
 
-
 class Star : public CelestialBody {
     public:
 
@@ -11,16 +10,23 @@ class Star : public CelestialBody {
 
         this->name = name;
         this->mass = massInSunMass*MASSOfSun;
-        this->radius = 10 * radiusInEarthRadius * RADIUSOfEarth / ASTRONOMICALUnit;
+        this->radius = radiusInEarthRadius * RADIUSOfEarth / ASTRONOMICALUnit;
     }
 
     void setBodyOnScene() {
 
         glPushMatrix();
-        glTranslatef(position3d.posX, position3d.posY, position3d.posZ);
+        glTranslated(position3d.posX, position3d.posY, position3d.posZ);
         getColor();
         glutWireSphere(radius, 10, 10);
         glPopMatrix();
+    }  
+
+    void getPositionVector() {
+
+        getColor();
+        glVertex3d(0.0, 0.0, 0.0);
+        glVertex3d(position3d.posX, position3d.posY, position3d.posZ);
     }
 };
 

@@ -21,7 +21,28 @@ class PlanetarySystem {
 
     PlanetarySystem(string name) {
 
+        cout << "PlanetarySystem constructor called" << endl;
         this->name = name;
+    }
+
+    ~PlanetarySystem() {
+
+         for (vector<Planet*>::iterator itP = planetsPTR.begin(); itP != planetsPTR.end(); itP++) { 
+            if( !(*itP)->satellitesPTR.empty()) {
+
+                for( vector<Satellite*>::iterator itS = (*itP)->satellitesPTR.begin(); itS != (*itP)->satellitesPTR.end(); itS++) 
+                    delete (*itS);                    
+
+                delete (*itP);
+            } else {
+                
+                delete (*itP);
+            }
+        }
+
+        delete sourceStar;
+
+        cout << "Planetary System destructor called" << endl;
     }
 
     void setSource(string name, GLdouble mass, GLdouble radius, nColor* color) {
@@ -33,9 +54,9 @@ class PlanetarySystem {
     void addPlanet(string name, GLdouble massInEarthMass, GLdouble radiusInEarthRadius, GLdouble semiMajorAxis, GLdouble eccentricy, GLdouble omega, nColor* color) {
     
         planetsPTR.push_back(new Planet(name, massInEarthMass, radiusInEarthRadius));
-
-        planetsPTR.back()->setEllipseParameters(semiMajorAxis, eccentricy, omega);
+        
         planetsPTR.back()->setSource(sourceStar);
+        planetsPTR.back()->setEllipseParameters(semiMajorAxis, eccentricy, omega);
         planetsPTR.back()->setColor(color);
 
         planetsPTR.back()->calcPeriod();
@@ -65,7 +86,31 @@ class PlanetarySystem {
                 }
             }
 
-            this_thread::sleep_for(std::chrono::milliseconds(10));
+            this_thread::sleep_for(chrono::milliseconds(10));
+            dayCount += 1.0 / 24;
+        }
+
+        glEnd();
+    }
+
+    void initializeVectors() {
+
+        sourceStar->getPositionVector();
+        
+        for (vector<Planet*>::iterator itP = planetsPTR.begin(); itP != planetsPTR.end(); itP++) {
+
+            (*itP)->calcDistanceAndPosition(dayCount);
+            (*itP)->getPositionVector();
+            
+            if( !(*itP)->satellitesPTR.empty()) {
+                for( vector<Satellite*>::iterator itS = (*itP)->satellitesPTR.begin(); itS != (*itP)->satellitesPTR.end(); itS++) {
+
+                    (*itS)->calcDistanceAndPosition(dayCount);                   
+                    (*itS)->getPositionVector();
+                }
+            }
+
+            this_thread::sleep_for(chrono::milliseconds(10));
             dayCount += 1.0 / 24;
         }
 
